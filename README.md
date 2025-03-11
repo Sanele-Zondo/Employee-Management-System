@@ -19,22 +19,6 @@ The `prevent_drop` function prevents the accidental dropping of tables in the da
 
 #### SQL Code:
 
-```sql
--- Function to Prevent Dropping of Tables
-CREATE OR REPLACE FUNCTION prevent_drop()
-RETURNS event_trigger
-LANGUAGE plpgsql
-AS
-$$
-	BEGIN
-		IF TG_TAG = 'DROP TABLE' THEN
-			RAISE EXCEPTION 'Cannot drop the table';
-		END IF;
-	END;
-$$
-
-
---1.------------------------------------------------------------------------------------------------------
 --Function to prevent dropping of Tables
 ```sql
 CREATE OR REPLACE FUNCTION prevent_drop()
@@ -59,7 +43,7 @@ EXECUTE FUNCTION prevent_drop();
 DROP TABLE employees;
 ```
 --2.------------------------------------------------------------------------------------------------------
----Insert Data Function
+---Handling employee insertions with validation.
 ```sql
 CREATE OR REPLACE PROCEDURE Insert_Employee
 (
@@ -112,8 +96,9 @@ $$
 
 ---TEST
 CALL Insert_Employee('Sanele','Zondo','555-567-8901','Intern',3,2,35000);
---3.------------------------------------------------------------------------------------------------------
---- Function to Ensure that when an employee is removed from employees table then it is removed from all the linked tables
+```
+
+3. Deleting linked employee data when an employee is removed.
 ```sql
 CREATE OR REPLACE FUNCTION f_delete()
 RETURNS TRIGGER
@@ -141,8 +126,9 @@ EXECUTE FUNCTION f_delete();
 ---TEST
 DELETE FROM employees
 WHERE employee_id=16;
---4.------------------------------------------------------------------------------------------------------
---Ensure that no row is deleted in the department table
+```
+
+4. Protecting department rows from deletion.
 ```sql
 CREATE OR REPLACE FUNCTION prevent_Delete_DEP()
 RETURNS TRIGGER
@@ -164,8 +150,8 @@ EXECUTE FUNCTION prevent_Delete_DEP();
 ---TEST 
 DELETE FROM departments
 WHERE department_id = 4;
---5.------------------------------------------------------------------------------------------------------
---Save the deleted employee to employees_archives table
+```
+5. Archiving deleted employee data.
 ```sql
 CREATE OR REPLACE FUNCTION archives()
 RETURNS TRIGGER
@@ -199,8 +185,8 @@ EXECUTE FUNCTION archives();
 --TEST
 DELETE FROM employees
 where employee_id=15
---7.------------------------------------------------------------------------------------------------------
---A view to display data.
+```
+6. A view to display data.
 CREATE OR REPLACE VIEW vw_view_data
 AS
 (
@@ -246,8 +232,8 @@ AS
 )
 ---TEST
 SELECT * FROM vw_view_data
---------------------------------------------------------------------------------------------------------
----Employee_Hierarchy
+```
+7. Displaying employee hierarchies.
 ```sql
 CREATE OR REPLACE FUNCTION Employee_hierarchy(employee int)
 RETURNS TABLE (Name VARCHAR ,Hieraechy_Level INT)
@@ -291,9 +277,9 @@ $$
 	END;
 $$
 ---TEST
-SELECT * from Employee_hierarchy(1) 
---------------------------------------------------------------------------------------------------------
--- Rank Employees by Salary in Each Department and Calculate Salary Total in Each Department
+SELECT * from Employee_hierarchy(1)
+```
+8. Ranking employees by salary within departments.
 SELECT 
     employee_id,
     first_name,
