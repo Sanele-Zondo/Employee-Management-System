@@ -15,11 +15,6 @@ The **Employee Management System (EMS)** is a collection of SQL functions, proce
 ## Features
 
 ### 1. Prevent Dropping of Tables
-The `prevent_drop` function prevents the accidental dropping of tables in the database.
-
-#### SQL Code:
-
---Function to prevent dropping of Tables
 ```sql
 CREATE OR REPLACE FUNCTION prevent_drop()
 RETURNS event_trigger
@@ -42,7 +37,7 @@ EXECUTE FUNCTION prevent_drop();
 ---TEST
 DROP TABLE employees;
 ```
-2.Handling employee insertions with validation.
+### 2.Handling employee insertions with validation.
 ```sql
 CREATE OR REPLACE PROCEDURE Insert_Employee
 (
@@ -97,7 +92,7 @@ $$
 CALL Insert_Employee('Sanele','Zondo','555-567-8901','Intern',3,2,35000);
 ```
 
-3. Deleting linked employee data when an employee is removed.
+### 3. Deleting linked employee data when an employee is removed.
 ```sql
 CREATE OR REPLACE FUNCTION f_delete()
 RETURNS TRIGGER
@@ -127,7 +122,7 @@ DELETE FROM employees
 WHERE employee_id=16;
 ```
 
-4. Protecting department rows from deletion.
+### 4. Protecting department rows from deletion.
 ```sql
 CREATE OR REPLACE FUNCTION prevent_Delete_DEP()
 RETURNS TRIGGER
@@ -150,7 +145,7 @@ EXECUTE FUNCTION prevent_Delete_DEP();
 DELETE FROM departments
 WHERE department_id = 4;
 ```
-5. Archiving deleted employee data.
+### 5. Archiving deleted employee data.
 ```sql
 CREATE OR REPLACE FUNCTION archives()
 RETURNS TRIGGER
@@ -185,7 +180,7 @@ EXECUTE FUNCTION archives();
 DELETE FROM employees
 where employee_id=15
 ```
-6. A view to display data.
+### 6. A view to display data.
 ```sql
 CREATE OR REPLACE VIEW vw_view_data
 AS
@@ -233,7 +228,7 @@ AS
 ---TEST
 SELECT * FROM vw_view_data
 ```
-7. Displaying employee hierarchies.
+### 7. Displaying employee hierarchies.
 ```sql
 CREATE OR REPLACE FUNCTION Employee_hierarchy(employee int)
 RETURNS TABLE (Name VARCHAR ,Hieraechy_Level INT)
@@ -278,8 +273,9 @@ $$
 $$
 ---TEST
 SELECT * from Employee_hierarchy(1)
+```
+### 8. Ranking employees by salary within departments.
 ```sql
-8. Ranking employees by salary within departments.
 SELECT 
     employee_id,
     first_name,
