@@ -42,8 +42,7 @@ EXECUTE FUNCTION prevent_drop();
 ---TEST
 DROP TABLE employees;
 ```
---2.------------------------------------------------------------------------------------------------------
----Handling employee insertions with validation.
+2.Handling employee insertions with validation.
 ```sql
 CREATE OR REPLACE PROCEDURE Insert_Employee
 (
