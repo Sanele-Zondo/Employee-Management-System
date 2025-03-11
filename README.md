@@ -291,4 +291,4 @@ SELECT
     RANK() OVER (PARTITION BY department_name ORDER BY salary DESC) AS RANK_SALARIES_BY_DEPT
 FROM vw_view_data;
 ```
-------------------------------------------------END--------------------------------------------------------
+#### END
