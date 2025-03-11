@@ -33,9 +33,10 @@ $$
 	END;
 $$
 
-```sql
+
 --1.------------------------------------------------------------------------------------------------------
 --Function to prevent dropping of Tables
+```sql
 CREATE OR REPLACE FUNCTION prevent_drop()
 RETURNS event_trigger
 LANGUAGE plpgsql
@@ -56,6 +57,7 @@ EXECUTE FUNCTION prevent_drop();
 
 ---TEST
 DROP TABLE employees;
+```
 --2.------------------------------------------------------------------------------------------------------
 ---Insert Data Function
 ```sql
@@ -291,17 +293,18 @@ $$
 ---TEST
 SELECT * from Employee_hierarchy(1) 
 --------------------------------------------------------------------------------------------------------
----RANK EMPLOYEES BY SALARY IN EACH DEPARTMENT and SALARY TOTAL IN EACH DEPARTMENT
-```sql
+-- Rank Employees by Salary in Each Department and Calculate Salary Total in Each Department
 SELECT 
-	employee_id
-	,first_name
-	,last_name
-	,job_title
-	,department_name
-	,manager
-	,salary
-	,round(SUM(salary)OVER(PARTITION BY department_name ORDER BY department_name ASC)/sum(salary)over()*100,2) AS "%_CONTRIBUTION"
-	,RANK()OVER(PARTITION BY department_name ORDER BY SALARY DESC) AS RANK_SALARIES_BY_DEPT
-FROM vw_view_data
+    employee_id,
+    first_name,
+    last_name,
+    job_title,
+    department_name,
+    manager,
+    salary,
+    -- Calculate the percentage contribution of the employee's salary to the department's total salary
+    ROUND(salary / SUM(salary) OVER (PARTITION BY department_name) * 100, 2) AS "%_CONTRIBUTION",
+    -- Rank employees based on their salary in descending order within each department
+    RANK() OVER (PARTITION BY department_name ORDER BY salary DESC) AS RANK_SALARIES_BY_DEPT
+FROM vw_view_data;
 ------------------------------------------------END--------------------------------------------------------
