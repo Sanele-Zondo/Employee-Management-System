@@ -285,8 +285,8 @@ SELECT
     department_name,
     manager,
     salary,
-    -- Calculate the percentage contribution of the employee's salary to the department's total salary
-    ROUND(salary / SUM(salary) OVER (PARTITION BY department_name) * 100, 2) AS "%_CONTRIBUTION",
+    -- Calculate the percentage contribution of the department's salary to the total salary
+    ROUND(SUM(salary) OVER (PARTITION BY department_name)/SUM(salary)OVER() * 100, 2) AS "%_CONTRIBUTION",
     -- Rank employees based on their salary in descending order within each department
     RANK() OVER (PARTITION BY department_name ORDER BY salary DESC) AS RANK_SALARIES_BY_DEPT
 FROM vw_view_data;
