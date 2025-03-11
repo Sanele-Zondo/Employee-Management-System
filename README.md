@@ -277,7 +277,7 @@ $$
 $$
 ---TEST
 SELECT * from Employee_hierarchy(1)
-```
+```sql
 8. Ranking employees by salary within departments.
 SELECT 
     employee_id,
@@ -292,4 +292,5 @@ SELECT
     -- Rank employees based on their salary in descending order within each department
     RANK() OVER (PARTITION BY department_name ORDER BY salary DESC) AS RANK_SALARIES_BY_DEPT
 FROM vw_view_data;
+```
 ------------------------------------------------END--------------------------------------------------------
