@@ -16,6 +16,7 @@ The **Employee Management System (EMS)** is a collection of SQL functions, proce
 ## Features
 
 ### 1. Prevent Dropping of Tables
+This function prevents the dropping of tables by raising an exception if the operation is attempted.
 ```sql
 CREATE OR REPLACE FUNCTION prevent_drop()
 RETURNS event_trigger
@@ -39,6 +40,7 @@ EXECUTE FUNCTION prevent_drop();
 DROP TABLE employees;
 ```
 ### 2.Handling employee insertions with validation.
+This procedure inserts new employees after validating the data, such as ensuring the employee does not already exist and that the department and manager IDs are valid.
 ```sql
 CREATE OR REPLACE PROCEDURE Insert_Employee
 (
@@ -94,6 +96,7 @@ CALL Insert_Employee('Sanele','Zondo','555-567-8901','Intern',3,2,35000);
 ```
 
 ### 3. Deleting linked employee data when an employee is removed.
+This trigger ensures that all linked employee data in related tables (such as contact information and salary) is deleted when the employee is removed.
 ```sql
 CREATE OR REPLACE FUNCTION f_delete()
 RETURNS TRIGGER
@@ -124,6 +127,7 @@ WHERE employee_id=16;
 ```
 
 ### 4. Protecting department rows from deletion.
+This function and trigger prevent the deletion of rows from the departments table.
 ```sql
 CREATE OR REPLACE FUNCTION prevent_Delete_DEP()
 RETURNS TRIGGER
@@ -147,6 +151,7 @@ DELETE FROM departments
 WHERE department_id = 4;
 ```
 ### 5. Archiving deleted employee data.
+This function ensures that when an employee is deleted, their data is archived in the 'employees_archives' table.
 ```sql
 CREATE OR REPLACE FUNCTION archives()
 RETURNS TRIGGER
@@ -182,6 +187,7 @@ DELETE FROM employees
 where employee_id=15
 ```
 ### 6. A view to display data.
+This view combines employee, department, and salary data to provide a comprehensive overview of employee information.
 ```sql
 CREATE OR REPLACE VIEW vw_view_data
 AS
@@ -230,6 +236,7 @@ AS
 SELECT * FROM vw_view_data
 ```
 ### 7. Displaying employee hierarchies.
+This function uses a recursive query to display the hierarchy of an employee's reporting structure.
 ```sql
 CREATE OR REPLACE FUNCTION Employee_hierarchy(employee int)
 RETURNS TABLE (Name VARCHAR ,Hieraechy_Level INT)
@@ -276,6 +283,7 @@ $$
 SELECT * from Employee_hierarchy(1)
 ```
 ### 8. Ranking employees by salary within departments.
+This query ranks employees based on their salary within each department and calculates their contribution to the department's total salary.
 ```sql
 SELECT 
     employee_id,
