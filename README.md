@@ -184,8 +184,9 @@ EXECUTE FUNCTION archives();
 --TEST
 DELETE FROM employees
 where employee_id=15
-```sql
+```
 6. A view to display data.
+```sql
 CREATE OR REPLACE VIEW vw_view_data
 AS
 (
