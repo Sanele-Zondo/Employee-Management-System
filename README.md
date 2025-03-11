@@ -9,6 +9,7 @@ The **Employee Management System (EMS)** is a collection of SQL functions, proce
 - Deleting linked employee data when an employee is removed.
 - Protecting department rows from deletion.
 - Archiving deleted employee data.
+- A view to display data.
 - Displaying employee hierarchies.
 - Ranking employees by salary within departments.
 
